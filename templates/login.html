@@ -1,0 +1,15 @@
+<body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+    </ul>
+        {% endif %}
+    {% endwith %}
+    <form action="/login" method="POST">
+        <input type="text" name="firstname">
+        <input type="text" name="password">
+        <button type="submit">hellooo</button>
+    </form>
+</body>
