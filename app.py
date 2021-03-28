@@ -7,11 +7,11 @@ app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'Aditya@123'
 app.config['MYSQL_DB'] = 'easy_detect'
-db_connect=MySQLdb.connect('localhost','root','Aditya@123','easy_detect')
+db_connect=MySQLdb.connect('freedb.tech','freedbtech_Finalproject','AAACV123','freedbtech_easydetect')
 cur = db_connect.cursor(cursorclass=DictCursor)
 @app.route('/', methods=['GET'])
 def index():
-    if session['loggedin']:
+    if "loggedin" in session.keys() and session['loggedin']:
         return redirect('/welcome')
     else:
         session['loggedin']=False
