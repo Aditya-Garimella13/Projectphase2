@@ -1,7 +1,7 @@
 <head>
-    <script src="creating_symptoms.js"></script>
+    <script src="{{ url_for('static',filename='js/creating_symptoms.js') }}"></script>
 </head>
 <body onload="createSymptoms()" id="symptoms">    
     <h1>Enter the values to generate report</h1>
-    <form id="symptoms-form"></form>
+    <form id="symptoms-form" action="/generate" method="POST"></form>
 </body>

@@ -9,8 +9,7 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'Aditya@123'
 app.config['MYSQL_DB'] = 'easy_detect'
 db_connect=MySQLdb.connect('freedb.tech','freedbtech_Finalproject','AAACV123','freedbtech_easydetect')
-cur = db_connect.cursor(cursorclass=DictCursor)`
-`
+cur = db_connect.cursor(cursorclass=DictCursor)
 @app.route('/', methods=['GET'])
 def index():
     if "loggedin" in session.keys() and session['loggedin']:
@@ -19,30 +18,18 @@ def index():
         session['loggedin']=False
         print("check1")
         return render_template('login1.html')
-@app.route('/register',methods=['GET'])
-def get_register():
-    return render_template('register.html')
-@app.route('/login',methods=['GET'])
-def get_login():
-    if session['loggedin']:
-        return redirect('/welcome')
-    return render_template('login.html')
 @app.route('/login',methods=['POST'])
 def login():
     if session['loggedin']:
         redirect('/welcome')
     username=request.form['username']
     password=request.form['password']
-    login_type=request.form['login_type']
-    if login_type == 'patient':
-        quey="select * from patient where username='"+username+"' and password='"+password+"'"
+    if request.form['login_type']=='patient':
+        cur.execute("select * from patient where username=%s and password=%s",(username,password))
     else:
-        quey="select * from doctor where username='"+username+"' and password='"+password+"'"
-    print(quey)
-    cur.execute(quey)
+        cur.execute("select * from patient where username=%s and password=%s",(username,password))
     data=cur.fetchall()
     if len(data)==0:
-        print("checking login")
         flash('enter valid data')
         return redirect('/')
     #print(jsonify(cur.fetchall()))
@@ -52,24 +39,28 @@ def login():
 @app.route('/welcome',methods=['GET'])
 def welcome():
     return session['data'][0]
+@app.route('/report',methods=['GET'])
+def test_generate():
+    if session['loggedin'] :
+        return render_template('creating_symptoms.html')
+    return redirect('/')
+@app.route('/generate',methods=['POST'])
+def generate_result():
+    data=prediction.get_diseases(request.form.to_dict())
+    print("insert into patient set report='"+data+"' where id="+str(session['data'][0]['id'])+";")
+    cur.execute("update patient set report='"+data+"' where username='"+str(session['data'][0]['username'])+"';")
+    return render_template('test_report.html',data=eval(data))
 @app.route('/register',methods=['POST'])
 def register():
-    specialization=None
-    table_name=request.form['signup_type']
     username=request.form['username']
     firstname=request.form['firstname']
     lastname=request.form['lastname']
     age=int(request.form['age'])
     address=request.form['address']
     phone=int(request.form['phone'])
-    if table_name == 'doctor':
-        specialization=request.form['specialization']
+    specialization=request.form['specialization']
     password=request.form['password']
-    if table_name=="doctor":
-        cur.execute("insert into "+table_name+"(username,firstname,lastname,age,address,phone,specialization,password) values(%s,%s,%s,%s,%s,%s,%s,%s);",(username,firstname,lastname,int(age),address,int(phone),specialization,password))
-    if table_name=="patient":
-        cur.execute("insert into "+table_name+"(username,firstname,lastname,age,address,phone,password) values(%s,%s,%s,%s,%s,%s,%s);",(username,firstname,lastname,int(age),address,int(phone),password))
-
+    cur.execute("insert into doctor (username,firstname,lastname,age,address,phone,specialization,password) values(%s,%s,%s,%s,%s,%s,%s,%s);",(username,firstname,lastname,int(age),address,int(phone),specialization,password))
     db_connect.commit()
     return redirect('/')
 @app.route('/logout',methods=['GET'])
