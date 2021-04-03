@@ -8,7 +8,7 @@ app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'Aditya@123'
 app.config['MYSQL_DB'] = 'easy_detect'
-db_connect=MySQLdb.connect('freedb.tech','freedbtech_Finalproject','AAACV123','freedbtech_easydetect')
+db_connect=MySQLdb.connect('remotemysql.com','XFio3uevxr','DrOzBUgBwI','XFio3uevxr')
 cur = db_connect.cursor(cursorclass=DictCursor)
 @app.route('/', methods=['GET'])
 def index():
