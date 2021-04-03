@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request,jsonify,redirect,flash,session
 import MySQLdb
 from MySQLdb.cursors import DictCursor
+import prediction
 app = Flask(__name__)
 app.secret_key="secret"
 app.config['MYSQL_HOST'] = 'localhost'
@@ -8,7 +9,8 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'Aditya@123'
 app.config['MYSQL_DB'] = 'easy_detect'
 db_connect=MySQLdb.connect('freedb.tech','freedbtech_Finalproject','AAACV123','freedbtech_easydetect')
-cur = db_connect.cursor(cursorclass=DictCursor)
+cur = db_connect.cursor(cursorclass=DictCursor)`
+`
 @app.route('/', methods=['GET'])
 def index():
     if "loggedin" in session.keys() and session['loggedin']:
