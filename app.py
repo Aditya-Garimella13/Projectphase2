@@ -18,7 +18,7 @@ def index():
     else:
         session['loggedin']=False
         print("check1")
-        return render_template('home.html')
+        return render_template('login1.html')
 @app.route('/register',methods=['GET'])
 def get_register():
     return render_template('register.html')
@@ -31,11 +31,18 @@ def get_login():
 def login():
     if session['loggedin']:
         redirect('/welcome')
-    username=request.form['firstname']
+    username=request.form['username']
     password=request.form['password']
-    cur.execute("select * from doctor where username=%s and password=%s",(username,password))
+    login_type=request.form['login_type']
+    if login_type == 'patient':
+        quey="select * from patient where username='"+username+"' and password='"+password+"'"
+    else:
+        quey="select * from doctor where username='"+username+"' and password='"+password+"'"
+    print(quey)
+    cur.execute(quey)
     data=cur.fetchall()
     if len(data)==0:
+        print("checking login")
         flash('enter valid data')
         return redirect('/')
     #print(jsonify(cur.fetchall()))
@@ -47,15 +54,22 @@ def welcome():
     return session['data'][0]
 @app.route('/register',methods=['POST'])
 def register():
+    specialization=None
+    table_name=request.form['signup_type']
     username=request.form['username']
     firstname=request.form['firstname']
     lastname=request.form['lastname']
     age=int(request.form['age'])
     address=request.form['address']
     phone=int(request.form['phone'])
-    specialization=request.form['specialization']
+    if table_name == 'doctor':
+        specialization=request.form['specialization']
     password=request.form['password']
-    cur.execute("insert into doctor (username,firstname,lastname,age,address,phone,specialization,password) values(%s,%s,%s,%s,%s,%s,%s,%s);",(username,firstname,lastname,int(age),address,int(phone),specialization,password))
+    if table_name=="doctor":
+        cur.execute("insert into "+table_name+"(username,firstname,lastname,age,address,phone,specialization,password) values(%s,%s,%s,%s,%s,%s,%s,%s);",(username,firstname,lastname,int(age),address,int(phone),specialization,password))
+    if table_name=="patient":
+        cur.execute("insert into "+table_name+"(username,firstname,lastname,age,address,phone,password) values(%s,%s,%s,%s,%s,%s,%s);",(username,firstname,lastname,int(age),address,int(phone),password))
+
     db_connect.commit()
     return redirect('/')
 @app.route('/logout',methods=['GET'])

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class="login-wrap">
 	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/login1.css') }}">
 	<div class="login-html">
@@ -53,3 +54,93 @@
 		</div>
 	</div>
 </div>
+=======
+<head>
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/login1.css') }}">
+  <script src="{{ url_for('static',filename='js/signup.js') }}"></script>
+</head>
+<body>
+  <div class="login-wrap">
+  	<div class="login-html">
+  		<input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
+  		<input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
+
+      		<div class="login-form">
+            <form action="/login" method="POST">
+      			<div class="sign-in-htm">
+      				<div class="group">
+      					<label for="user" class="label">Username</label>
+      					<input id="user" type="text" class="input" name="username">
+      				</div>
+      				<div class="group">
+      					<label for="pass" class="label">Password</label>
+      					<input id="pass" type="password" class="input" data-type="password" name="password">
+      				</div>
+              <div class="group">
+                <input type="radio" name="login_type" value="patient" id="patient">
+                <label for="patient">patient</label>
+                <input type="radio" name="login_type" value="doctor" id="doctor">
+                <label for="doctor">doctor</label>
+              </div>
+      				<div class="group">
+      					<input type="submit" class="button" value="Sign In">
+      				</div>
+      				<div class="hr"></div>
+      				<div class="foot-lnk">
+      					<a href="#forgot">Forgot Password?</a>
+      				</div>
+      			</div>
+            </form>
+          <form action="/register" method="POST">
+    			<div class="sign-up-htm" id="signup-form">
+    				<div class="group">
+    					<label for="user" class="label">Username</label>
+    					<input id="user" type="text" class="input" name="username">
+    				</div>
+    				<div class="group">
+    					<label for="pass" class="label">Password</label>
+    					<input id="pass" type="password" class="input" data-type="password" name="password">
+    				</div>
+            <div class="group">
+              <label for="user" class="label">first name</label>
+              <input id="user" type="text" class="input" name="firstname">
+            </div>
+
+            <div class="group">
+              <label for="user" class="label">last name</label>
+              <input id="user" type="text" class="input" name="lastname">
+            </div>
+            <div class="group">
+              <label for="user" class="label">Age</label>
+              <input id="user" type="number" class="input" name="age">
+            </div>
+
+    				<div class="group">
+    					<label for="address" class="label"> Address</label>
+    					<input id="address" type="text" class="input" name="address">
+    				</div>
+            <div class="group">
+    					<label for="phone" class="label"> mobile</label>
+    					<input id="phone" type="text" class="input" name="phone">
+    				</div>
+            <div class="group">
+              <input type="radio" name="signup_type" value="patient" id="signup_patient" onclick='logintype()'>
+              <label for="patient">patient</label>
+              <input type="radio" name="signup_type" value="doctor" id="signup_doctor" onclick='logintype()'>
+              <label for="doctor">doctor</label>
+            </div>
+    				<div class="group">
+    					<input type="submit" class="button" value="Sign Up" id="signup">
+    				</div>
+            </form>
+  				<div class="hr"></div>
+  				<div class="foot-lnk">
+  					<label for="tab-1">Already Member?</a>
+  				</div>
+
+  			</div>
+  		</div>
+  	</div>
+  </div>
+</body>
+>>>>>>> f106d3729953f2ee15941d1ec0f86225f8dbd4b9
