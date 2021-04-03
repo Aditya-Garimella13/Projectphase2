@@ -38,7 +38,7 @@ def login():
     return redirect('/welcome')
 @app.route('/welcome',methods=['GET'])
 def welcome():
-    return session['data'][0]
+    return render_template('Welcome_page.html',data=session['data'][0])
 @app.route('/report',methods=['GET'])
 def test_generate():
     if session['loggedin'] :
@@ -48,7 +48,8 @@ def test_generate():
 def generate_result():
     data=prediction.get_diseases(request.form.to_dict())
     print("insert into patient set report='"+data+"' where id="+str(session['data'][0]['id'])+";")
-    cur.execute("update patient set report='"+data+"' where username='"+str(session['data'][0]['username'])+"';")
+    cur.execute("update patient set report='"+data+"' where id='"+str(session['data'][0]['id'])+"';")
+    db_connect.commit()
     return render_template('test_report.html',data=eval(data))
 @app.route('/register',methods=['POST'])
 def register():
@@ -58,9 +59,12 @@ def register():
     age=int(request.form['age'])
     address=request.form['address']
     phone=int(request.form['phone'])
-    specialization=request.form['specialization']
     password=request.form['password']
-    cur.execute("insert into doctor (username,firstname,lastname,age,address,phone,specialization,password) values(%s,%s,%s,%s,%s,%s,%s,%s);",(username,firstname,lastname,int(age),address,int(phone),specialization,password))
+    if request.form['signup_type'] == 'doctor':
+        specialization=request.form['specialization']
+        cur.execute("insert into doctor (username,firstname,lastname,age,address,phone,specialization,password) values(%s,%s,%s,%s,%s,%s,%s,%s);",(username,firstname,lastname,int(age),address,int(phone),specialization,password))
+    else:
+        cur.execute("insert into patient (username,firstname,lastname,age,address,phone,password) values(%s,%s,%s,%s,%s,%s,%s);",(username,firstname,lastname,int(age),address,int(phone),password))
     db_connect.commit()
     return redirect('/')
 @app.route('/logout',methods=['GET'])
