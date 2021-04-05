@@ -1,0 +1,8 @@
+<body>
+    {% for disease,details in doctors.items() %}
+        <h2>{{disease}}</h2>
+        {% for iter_doctor in details %}
+            <p>{{iter_doctor['username']}}</p>
+        {% endfor %}
+    {% endfor %}
+</body>

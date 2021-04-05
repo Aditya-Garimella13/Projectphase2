@@ -1,4 +1,15 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/test_report.css') }}">
+</head>
 <body>
     <h1>welcome {{data['username']}}</h1>
-    <a href="/report"><button>generate report</button></a>
+    <h1>Previous Result reports</h1>
+        {% for name in report.keys() %}
+        <p>{{name}}</p>
+        <div class="container">
+        <div class="skills disease" style="width: {{report[name]}};">{{report[name]}}</div>
+        </div>
+        {% endfor %}
+    <a href="/report"><button>generate new report</button></a>
+    <a href="/recommenddoctor"><button> doctor recommendations</button></a>
 </body>
