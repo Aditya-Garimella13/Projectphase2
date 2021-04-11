@@ -1,8 +1,36 @@
+<head>
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/doctors_list.css') }}">
+</head>
 <body>
     {% for disease,details in doctors.items() %}
         <h2>{{disease}}</h2>
+        <div class="tbl-header">
+            <table cellpadding="0" cellspacing="0" border="0">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Specialisation</th>
+                  <th>Rating</th>
+                  <th>Phone Number</th>
+                  <th>Address</th>
+                  <th></th>
+                </tr>
+              </thead>
+            </table>
+        </div>
         {% for iter_doctor in details %}
-            <p>{{iter_doctor['username']}}</p>
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tbody>
+              <tr>
+                <td>{{iter_doctor['username']}}</td>
+                <td>{{iter_doctor['specialization']}} </td>
+                <td>{{iter_doctor['Rating']}}</td>
+                <td>{{iter_doctor['phone']}}</td>
+                <td>{{iter_doctor['address']}}</td>
+                <td><a href="/ratedoctor?doctorid={{iter_doctor['id']}}"><button type="button">Rate Doctor</button></a></td>
+              </tr>
         {% endfor %}
+        </tbody>
+        </table>
     {% endfor %}
 </body>

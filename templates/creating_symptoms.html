@@ -1,7 +1,20 @@
-<head>
-    <script src="{{ url_for('static',filename='js/creating_symptoms.js') }}"></script>
-</head>
-<body onload="createSymptoms()" id="symptoms">    
-    <h1>Enter the values to generate report</h1>
-    <form id="symptoms-form" action="/generate" method="POST"></form>
-</body>
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static',filename='styles/Creating_symptoms.css') }}">
+        <!-- <script src="{{ url_for('static',filename='js/creating_symptoms.js') }}"></script> -->
+    </head>
+    <body id="symptoms">   
+            <h2>Enter the values to generate report</h2>
+            <form action="/generate" method="POST" style="text-align: center;"> 
+                {% for i in symptoms %}
+                <input id={{i}} type='checkbox' name={{i}} value="1" />
+                <label for={{i}}>
+                <span></span>
+                {{i}}
+                <ins><i>{{i}}</i></ins>
+                    </label>
+                {% endfor %}
+                <button type="submit">Generate Report</button>
+            </form>
+    </body>
+</html>
