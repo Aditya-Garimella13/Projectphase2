@@ -13,6 +13,7 @@ app.config['MYSQL_DB'] = 'easy_detect'
 db_connect=MySQLdb.connect('remotemysql.com','XFio3uevxr','DrOzBUgBwI','XFio3uevxr')
 cur = db_connect.cursor(cursorclass=DictCursor)
 def is_json(myjson):
+
     try:
         json_object = json.loads(myjson)
     except ValueError as e:
@@ -76,7 +77,9 @@ def welcome():
     data=cur.fetchall()
     session['data']=data
     report=None
-    if is_json(session['data'][0]['report']):
+    print(type(session['data'][0]['report']))
+    print(session['data'][0]['report'] is not None)
+    if session['data'][0]['report'] is not None and is_json(session['data'][0]['report']):
         report=eval(session['data'][0]['report'])
     return render_template('Welcome_page_patient.html',data=session['data'][0],report=report)
 @app.route('/welcome_doctor',methods=['GET'])
