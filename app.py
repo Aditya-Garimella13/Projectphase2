@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request,jsonify,redirect,flash,session
 import MySQLdb
+from MySQLdb import IntegrityError
 import json
 from MySQLdb.cursors import DictCursor
 import prediction
@@ -12,6 +13,8 @@ app.config['MYSQL_PASSWORD'] = 'Aditya@123'
 app.config['MYSQL_DB'] = 'easy_detect'
 db_connect=MySQLdb.connect('remotemysql.com','XFio3uevxr','DrOzBUgBwI','XFio3uevxr')
 cur = db_connect.cursor(cursorclass=DictCursor)
+errors={}
+errors['1062']="Entry already exists"
 def is_json(myjson):
 
     try:
@@ -161,9 +164,42 @@ def ratedoctor_post():
     overall_rating=float(doctor['rating'])*float(doctor['nor'])
     rating=overall_rating+float(request.form['rating'])
     rating=rating/(int(doctor['nor'])+1)
-    cur.execute("update doctor set Rating="+str(rating)+"where id="+doctorid+";")
+    cur.execute("update doctor set Rating="+str(rating)+"where id="+doctorid+";")   
+    cur.execute("update doctor set nor="+str(int(doctor['nor'])+1)+" where id="+doctorid+";")
     db_connect.commit()
     return redirect('/recommenddoctor')
+@app.route('/book_appointment',methods=['GET'])
+def book_appointment():
+    doctorid =request.args.get('doctorid')
+    disease=request.args.get('disease')
+    print(disease)
+    data={}
+    data['disease']=disease
+    data['doctorid']=doctorid
+    return render_template('appointment_booking.html',data=data)
+@app.route('/book_appointment',methods=['POST'])
+def post_book_appointment():
+    date=request.form.get('date')
+    ses=request.form.get('session')
+    doctorid=request.args.get('doctorid')
+    disease=request.form.get('disease')
+    print('insert into Appointments values('+str(session['data'][0]['id'])+","+str(doctorid)+',"'+ses+'","'+disease+'","'+date+'");')
+    try:
+        cur.execute('insert into Appointments values('+str(session['data'][0]['id'])+","+str(doctorid)+',"'+ses+'","'+disease+'","'+date+'");')
+    except (MySQLdb.Error, MySQLdb.Warning) as e:
+        print(errors[str(e.args[0])])
+    db_connect.commit()
+    return redirect('/recommenddoctor')
+@app.route('/appointments',methods=['GET'])
+def get_appointments():
+    if session['login_type']=='patient':
+        cur.execute("select * from Appointments join doctor on doctor.id=Appointments.doctor_id where Appointments.patient_id="+str(session['data'][0]['id'])+";")
+    else:
+        cur.execute("select * from Appointments where doctor_id="+str(session['data'][0]['id'])+";")
+    appointments = cur.fetchall()
+    appointments=list(appointments)
+    print(appointments)
+    return render_template('appointments.html',login_type=session['login_type'],appointments=appointments)
 @app.route('/logout',methods=['GET'])
 def logout():
     session['loggedin']=False

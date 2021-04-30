@@ -1,0 +1,84 @@
+<head>
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/appointments.css') }}">
+    <style>
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+      }
+      
+      li {
+        float: left;
+      }
+      
+      li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+      
+      li a:hover:not(.active) {
+        background-color: #111;
+      }
+      
+      .active {
+        background-color: #4CAF50;
+      }
+      </style>
+</head>
+<body>
+  <ul>
+    <li style="float:right;"><a class="active" href="/">Home</a></li>
+  </ul>
+  <h1>Your Appointments</h1>
+        <div class="tbl-header">
+            <table cellpadding="0" cellspacing="0" border="0">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Age</th>
+                  <th>Date</th>
+                  <th>Session</th>
+                  <th>Phone Number</th>
+                  <th>Problem</th>
+                </tr>
+              </thead>
+            </table>
+        </div>
+        {% if login_type =='doctor' %}
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tbody>
+        {% for patient in appointments %}
+              <tr>
+                <td>{{patient['firstname']}} {{patient['lastname']}}</td>
+                <td>{{patient['age']}} </td>
+                <td>{{patient['date']}}</td>
+                <td>{{patient['session']}}</td>
+                <td>{{patient['phone']}}</td>
+                <td>{{patient['Problem']}}</td>
+                             </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+        {% endif %}
+        {% if login_type =='patient' %}
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tbody>
+        {% for doctor in appointments %}
+              <tr>
+                <td >{{doctor['firstname']}} {{doctor['lastname']}}</td>
+                <td >{{doctor['age']}} </td>
+                <td >{{doctor['date']}}</td>
+                <td  >{{doctor['session']}}</td>
+                <td>{{doctor['phone']}}</td>
+                <td>{{doctor['Problem']}}</td>
+              </tr>
+        {% endfor %}
+             </tbody>
+        </table>
+        {% endif %}
+</body>

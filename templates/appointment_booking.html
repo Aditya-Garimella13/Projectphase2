@@ -1,0 +1,58 @@
+<head>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/login1.css') }}">
+  </head>
+  <body onload="populate();">
+
+    <div class="login-wrap">
+        <div class="login-html">
+            <input id="tab-2" type="radio" name="tab" class="sign-up" checked><label for="tab-2" class="tab" >Book Appointment</label>
+  
+                <div class="login-form">
+            <form action="/book_appointment?doctorid={{data['doctorid']}}" method="POST">
+                  <div class="sign-up-htm" id="signup-form">
+                      <div class="group">
+                          <label for="date" class="label">Date of appointment</label>
+                          <input id="date" type="date" class="input" name="date" min="2000-01-02" />
+                      </div>
+              <div class="group">
+                <label for="Session" class="label">Session</label>
+                    <select class="input" id="Session" name="session">
+                        <option value="S1" style="color:blue;">Session 1 (9:00am to 12:00pm)</option>
+                        <option value="S2" style="color:blue;">Session 2 (1:00pm to 4:00pm)</option>
+                        <option value="S3" style="color:blue;">Session 3 (4:00 pm to 7:00pm) </option>
+                    </select>
+              </div>
+              <div class="group">
+                <label for="disease" class="label">Disease</label>
+                <input id="disease" type="text" class="input" name="disease">
+              </div>
+                      <div class="group">
+                          <input type="submit" class="button" value="Update Profile" id="signup">
+                      </div>
+              </form>
+                    <div class="hr"></div>
+                    <div class="foot-lnk">
+                        <label for="tab-1">Already Member?</a>
+                    </div>
+  
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+        function populate(){
+            const data = JSON.parse('{{data|tojson }}');
+            console.log(data['disease']);
+              document.getElementById('disease').value = data['disease'];
+          }
+            function datesetter(){
+                n =  new Date();
+                y = n.getFullYear();
+                m = n.getMonth() + 1;
+                d = n.getDate();
+                
+                document.getElementById("date").min=y + "-" + m + "-" + d-1;
+                
+
+            }
+        </script>
+  </body>

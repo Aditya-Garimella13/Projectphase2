@@ -11,6 +11,15 @@
       		<div class="login-form">
             <form action="/login" method="POST">
       			<div class="sign-in-htm">
+					{% with messages = get_flashed_messages() %}
+					{% if messages %}
+					  <ul class=flashes>
+					  {% for message in messages %}
+						<li style="color: red">{{ message }}</li>
+					  {% endfor %}
+					  </ul>
+					{% endif %}
+					{% endwith %}
       				<div class="group">
       					<label for="user" class="label">Username</label>
       					<input id="user" type="text" class="input" name="username">

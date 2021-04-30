@@ -46,6 +46,7 @@
                   <th>Phone Number</th>
                   <th>Address</th>
                   <th></th>
+                  <th></th>
                 </tr>
               </thead>
             </table>
@@ -60,6 +61,7 @@
                 <td>{{iter_doctor['phone']}}</td>
                 <td>{{iter_doctor['address']}}</td>
                 <td><a href="/ratedoctor?doctorid={{iter_doctor['id']}}"><button type="button">Rate Doctor</button></a></td>
+                <td><a href="/book_appointment?doctorid={{iter_doctor['id']}}&disease={{disease}}"><button type="button">Book Appointment</button></a></td>
               </tr>
         {% endfor %}
         </tbody>
