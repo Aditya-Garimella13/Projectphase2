@@ -29,7 +29,7 @@
       					<input id="pass" type="password" class="input" data-type="password" name="password">
       				</div>
               <div class="group">
-                <input type="radio" name="login_type" value="patient" id="patient">
+                <input type="radio" name="login_type" value="patient" id="patient" required checked>
                 <label for="patient">patient</label>
                 <input type="radio" name="login_type" value="doctor" id="doctor">
                 <label for="doctor">doctor</label>
@@ -38,9 +38,6 @@
       					<input type="submit" class="button" value="Sign In">
       				</div>
       				<div class="hr"></div>
-      				<div class="foot-lnk">
-      					<a href="#forgot">Forgot Password?</a>
-      				</div>
       			</div>
             </form>
           <form action="/register" method="POST">
@@ -76,7 +73,7 @@
     					<input id="phone" type="text" class="input" name="phone">
     				</div>
             <div class="group">
-              <input type="radio" name="signup_type" value="patient" id="signup_patient" onclick='logintype()'>
+              <input type="radio" name="signup_type" value="patient" id="signup_patient" onclick='logintype()' required>
               <label for="patient">patient</label>
               <input type="radio" name="signup_type" value="doctor" id="signup_doctor" onclick='logintype()'>
               <label for="doctor">doctor</label>

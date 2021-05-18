@@ -87,7 +87,10 @@ def welcome():
     return render_template('Welcome_page_patient.html',data=session['data'][0],report=report)
 @app.route('/welcome_doctor',methods=['GET'])
 def welcome_doctor():
-    return "Hello doctor"
+    cur.execute("select * from doctor where id="+str(session['data'][0]['id']))
+    data=cur.fetchall()
+    session['data']=data
+    return render_template('Welcome_page_doctor.html',data=session['data'][0])
 @app.route('/report',methods=['GET'])
 def test_generate():
     symptoms=['itching', 'nodal_skin_eruptions', 'continuous_sneezing', 'chills','joint_pain', 'stomach_pain', 'acidity', 'ulcers_on_tongue','burning_micturition', 'fatigue', 'weight_gain', 'anxiety','cold_hands_and_feets', 'lethargy', 'cough', 'sunken_eyes','breathlessness', 'sweating', 'dehydration', 'indigestion', 'headache','yellowish_skin', 'dark_urine', 'nausea', 'loss_of_appetite','constipation', 'diarrhoea', 'yellow_urine', 'acute_liver_failure','malaise', 'blurred_and_distorted_vision', 'throat_irritation','redness_of_eyes', 'sinus_pressure', 'runny_nose', 'congestion','chest_pain', 'fast_heart_rate', 'pain_during_bowel_movements','pain_in_anal_region', 'bloody_stool', 'irritation_in_anus','neck_pain', 'puffy_face_and_eyes', 'enlarged_thyroid', 'brittle_nails','swollen_extremeties', 'excessive_hunger', 'drying_and_tingling_lips','slurred_speech', 'knee_pain', 'hip_joint_pain', 'stiff_neck','swelling_joints', 'movement_stiffness', 'spinning_movements','unsteadiness', 'loss_of_smell', 'passage_of_gases', 'internal_itching','muscle_pain', 'red_spots_over_body', 'dischromic _patches','family_history', 'rusty_sputum', 'visual_disturbances','receiving_blood_transfusion', 'receiving_unsterile_injections', 'coma','stomach_bleeding', 'palpitations', 'painful_walking', 'skin_peeling','silver_like_dusting', 'small_dents_in_nails', 'inflammatory_nails','blister', 'red_sore_around_nose', 'yellow_crust_ooze']
@@ -195,7 +198,7 @@ def get_appointments():
     if session['login_type']=='patient':
         cur.execute("select * from Appointments join doctor on doctor.id=Appointments.doctor_id where Appointments.patient_id="+str(session['data'][0]['id'])+";")
     else:
-        cur.execute("select * from Appointments where doctor_id="+str(session['data'][0]['id'])+";")
+        cur.execute("select * from Appointments join patient on patient.id=Appointments.patient_id where Appointments.doctor_id="+str(session['data'][0]['id'])+";")
     appointments = cur.fetchall()
     appointments=list(appointments)
     print(appointments)
